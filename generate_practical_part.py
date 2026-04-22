@@ -135,7 +135,6 @@ def solve_max_return_under_risk(
     if result.success:
         return safe_weights(result.x)
 
-    # Fallback: minimum variance if the direct problem fails
     fallback = minimize(
         lambda w: float(w @ cov @ w),
         x0=x0,
@@ -337,7 +336,6 @@ def calibrate_config(
                 if not m_val:
                     continue
 
-                # Hard-ish acceptance gate from the plan
                 es_ok = m_val["ES_95"] <= min(m_ew["ES_95"], m_spy["ES_95"]) * 1.10
                 mdd_ok = abs(m_val["max_drawdown"]) <= min(abs(m_ew["max_drawdown"]), abs(m_spy["max_drawdown"])) * 1.15
                 gate = es_ok and mdd_ok
